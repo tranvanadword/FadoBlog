@@ -2,6 +2,8 @@
 
 Muc tieu: dua database cua FadoBlog len Cloudflare D1, media len R2, va deploy Next.js qua Cloudflare Workers/OpenNext.
 
+Production URL hien tai: `https://blog.thewinds.club`.
+
 ## 1. Tao database D1
 
 Dang nhap Cloudflare:
