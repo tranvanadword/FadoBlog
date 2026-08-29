@@ -1,0 +1,43 @@
+{
+  "name": "fadoblog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "db:seed": "node prisma/seed.mjs",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "prod:check": "next build",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf:upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "cf:d1:create": "wrangler d1 create fadoblog",
+    "cf:d1:migrate:local": "wrangler d1 migrations apply fadoblog --local",
+    "cf:d1:migrate:remote": "wrangler d1 migrations apply fadoblog --remote",
+    "cf:d1:seed:local": "wrangler d1 execute fadoblog --local --file=cloudflare/d1/seed.sql",
+    "cf:d1:seed:remote": "wrangler d1 execute fadoblog --remote --file=cloudflare/d1/seed.sql"
+  },
+  "dependencies": {
+    "@prisma/client": "6.14.0",
+    "lucide-react": "^1.35.0",
+    "next": "latest",
+    "prisma": "6.14.0",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.4",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest",
+    "wrangler": "^4.127.1"
+  }
+}

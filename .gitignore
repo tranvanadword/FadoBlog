@@ -1,15 +1,18 @@
-# Windows
-Thumbs.db
-Desktop.ini
-
-# Editor
-.vscode/
-.idea/
-
-# Logs
-*.log
-
-# Dependencies/build output for future upgrades
 node_modules/
+.next/
+out/
 dist/
 build/
+.env
+.env*.local
+.vercel/
+.open-next/
+.wrangler/
+.DS_Store
+*.log
+coverage/
+outputs/
+package-lock.json
+tsconfig.tsbuildinfo
+public/uploads/*
+!public/uploads/.gitkeep

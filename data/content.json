@@ -1,0 +1,200 @@
+{
+  "categories": [
+    {
+      "id": "travel",
+      "name": "Du lịch",
+      "slug": "du-lich",
+      "description": "Lịch trình, trải nghiệm và ghi chú cho những chuyến đi đáng nhớ."
+    },
+    {
+      "id": "food",
+      "name": "Ẩm thực",
+      "slug": "am-thuc",
+      "description": "Món ngon, quán nhỏ và văn hóa ăn uống địa phương."
+    },
+    {
+      "id": "tech",
+      "name": "Công nghệ",
+      "slug": "cong-nghe",
+      "description": "Công cụ, AI và cách làm việc hiệu quả hơn."
+    },
+    {
+      "id": "life",
+      "name": "Đời sống",
+      "slug": "doi-song",
+      "description": "Những ý tưởng giúp ngày thường gọn gàng và có nhịp hơn."
+    }
+  ],
+  "tags": [
+    {
+      "id": "tag-ai",
+      "name": "AI",
+      "slug": "ai"
+    },
+    {
+      "id": "tag-du-lich",
+      "name": "Du lịch",
+      "slug": "du-lich"
+    },
+    {
+      "id": "tag-am-thuc",
+      "name": "Ẩm thực",
+      "slug": "am-thuc"
+    },
+    {
+      "id": "tag-nang-suat",
+      "name": "Năng suất",
+      "slug": "nang-suat"
+    }
+  ],
+  "postRevisions": [],
+  "posts": [
+    {
+      "id": "post-1",
+      "title": "Một ngày chậm rãi ở thành phố biển",
+      "slug": "mot-ngay-cham-rai-o-thanh-pho-bien",
+      "excerpt": "Lịch trình nhẹ nhàng cho một ngày có cà phê sáng, chợ địa phương và hoàng hôn bên bờ nước.",
+      "content": "Một ngày tốt để khám phá thành phố biển không cần bắt đầu bằng lịch trình dày đặc. Hãy chọn một quán cà phê gần khu dân cư, đi chợ vào cuối buổi sáng, rồi dành buổi chiều cho những con đường ít khách du lịch hơn.",
+      "status": "published",
+      "coverImage": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+      "category": {
+        "id": "travel",
+        "name": "Du lịch",
+        "slug": "du-lich",
+        "description": "Lịch trình, trải nghiệm và ghi chú cho những chuyến đi đáng nhớ."
+      },
+      "author": "FadoBlog Editorial",
+      "readingMinutes": 6,
+      "publishedAt": "2026-08-29",
+      "tags": [
+        "du lịch",
+        "lịch trình",
+        "biển"
+      ]
+    },
+    {
+      "id": "post-2",
+      "title": "Những món nên thử khi ghé chợ sáng",
+      "slug": "nhung-mon-nen-thu-khi-ghe-cho-sang",
+      "excerpt": "Cách chọn món, hỏi giá và vài gợi ý để bắt đầu một buổi sáng đầy năng lượng.",
+      "content": "Chợ sáng là bản đồ hương vị dễ đọc nhất của một địa phương. Nên đi sớm, quan sát quầy nào đông khách quen, hỏi phần nhỏ để thử nhiều món, và luôn để bụng cho một ly nước mát cuối buổi.",
+      "status": "published",
+      "coverImage": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1200&q=80",
+      "category": {
+        "id": "food",
+        "name": "Ẩm thực",
+        "slug": "am-thuc",
+        "description": "Món ngon, quán nhỏ và văn hóa ăn uống địa phương."
+      },
+      "author": "FadoBlog Editorial",
+      "readingMinutes": 4,
+      "publishedAt": "2026-08-28",
+      "tags": [
+        "ẩm thực",
+        "chợ sáng"
+      ]
+    },
+    {
+      "id": "post-3",
+      "title": "Ghi chú để ý tưởng không bị rơi",
+      "slug": "ghi-chu-de-y-tuong-khong-bi-roi",
+      "excerpt": "Một hệ thống ghi nhanh đơn giản cho người hay di chuyển và hay có ý tưởng bất chợt.",
+      "content": "Một hệ thống ghi chú tốt không cần phức tạp. Chỉ cần một nơi thu thập nhanh, một lịch xem lại hằng tuần và vài nhãn rõ ràng.",
+      "status": "published",
+      "coverImage": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80",
+      "category": {
+        "id": "life",
+        "name": "Đời sống",
+        "slug": "doi-song",
+        "description": "Những ý tưởng giúp ngày thường gọn gàng và có nhịp hơn."
+      },
+      "author": "FadoBlog Editorial",
+      "readingMinutes": 5,
+      "publishedAt": "2026-08-27",
+      "tags": [
+        "đời sống",
+        "ghi chú",
+        "năng suất"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-about",
+      "title": "Giới thiệu FadoBlog",
+      "slug": "gioi-thieu",
+      "content": "FadoBlog là nền tảng tin tức/blog được xây dựng theo hướng CMS hiện đại, có thể quản lý nội dung thủ công và mở rộng workflow AI.",
+      "status": "published",
+      "seoTitle": "Giới thiệu FadoBlog",
+      "metaDescription": "Tìm hiểu về FadoBlog và định hướng phát triển nền tảng nội dung.",
+      "updatedAt": "2026-08-29"
+    },
+    {
+      "id": "page-contact",
+      "title": "Liên hệ",
+      "slug": "lien-he",
+      "content": "Trang liên hệ sẽ được kết nối form và email trong giai đoạn backend.",
+      "status": "published",
+      "seoTitle": "Liên hệ FadoBlog",
+      "metaDescription": "Liên hệ với đội ngũ FadoBlog.",
+      "updatedAt": "2026-08-29"
+    },
+    {
+      "id": "page-privacy",
+      "title": "Chính sách bảo mật",
+      "slug": "chinh-sach-bao-mat",
+      "content": "FadoBlog sẽ cập nhật chính sách bảo mật chi tiết trước khi triển khai production.",
+      "status": "draft",
+      "seoTitle": "Chính sách bảo mật",
+      "metaDescription": "Chính sách bảo mật của FadoBlog.",
+      "updatedAt": "2026-08-29"
+    },
+    {
+      "id": "page-terms",
+      "title": "Điều khoản sử dụng",
+      "slug": "dieu-khoan-su-dung",
+      "content": "FadoBlog sẽ cập nhật điều khoản sử dụng chi tiết trước khi mở đăng ký người dùng.",
+      "status": "draft",
+      "seoTitle": "Điều khoản sử dụng",
+      "metaDescription": "Điều khoản sử dụng FadoBlog.",
+      "updatedAt": "2026-08-29"
+    }
+  ],
+  "aiJobs": [],
+  "aiWorkflows": [],
+  "media": [],
+  "contactMessages": [],
+  "pageViews": [
+    {
+      "id": "view-1788022819124-84e8ef1e106d2",
+      "path": "/post/ghi-chu-de-y-tuong-khong-bi-roi",
+      "postId": "post-3",
+      "referrer": "http://localhost:3000/post/ghi-chu-de-y-tuong-khong-bi-roi",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "createdAt": "2026-08-29T17:00:19.124Z"
+    },
+    {
+      "id": "view-1788022815682-184b4331ac546",
+      "path": "/post/mot-ngay-cham-rai-o-thanh-pho-bien",
+      "postId": "post-1",
+      "referrer": "http://localhost:3000/post/mot-ngay-cham-rai-o-thanh-pho-bien",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "createdAt": "2026-08-29T17:00:15.682Z"
+    }
+  ],
+  "auditLogs": [],
+  "settings": {
+    "siteName": "FadoBlog",
+    "siteDescription": "Tin tức, công nghệ, du lịch, ẩm thực và đời sống từ hệ thống CMS FadoBlog.",
+    "logoUrl": "",
+    "publicUrl": "http://localhost:3000",
+    "defaultSeoTitle": "FadoBlog",
+    "defaultMetaDescription": "FadoBlog chia sẻ tin tức, công nghệ, du lịch, ẩm thực và đời sống.",
+    "facebookUrl": "",
+    "youtubeUrl": "",
+    "linkedinUrl": "",
+    "contactEmail": "hello@fadoblog.local",
+    "headerLinks": [],
+    "footerLinks": []
+  }
+}

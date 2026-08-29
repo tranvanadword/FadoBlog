@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PostStatus {
+  draft
+  pending_review
+  scheduled
+  published
+  archived
+}
+
+enum UserRole {
+  admin
+  editor
+  author
+  ai_writer
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String?
+  role         UserRole @default(author)
+  active       Boolean  @default(true)
+  posts        Post[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  posts       Post[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  posts     PostTag[]
+  createdAt DateTime  @default(now())
+}
+
+model PostTag {
+  postId String
+  tagId  String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+}
+
+model Post {
+  id              String         @id @default(cuid())
+  title           String
+  slug            String         @unique
+  excerpt         String?
+  content         String
+  status          PostStatus     @default(draft)
+  coverImage      String?
+  seoTitle        String?
+  metaDescription String?
+  publishedAt     DateTime?
+  categoryId      String?
+  authorId        String?
+  category        Category?      @relation(fields: [categoryId], references: [id])
+  author          User?          @relation(fields: [authorId], references: [id])
+  tags            PostTag[]
+  aiJobs          AiJob[]
+  revisions       PostRevision[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model Page {
+  id              String     @id @default(cuid())
+  title           String
+  slug            String     @unique
+  content         String
+  status          PostStatus @default(draft)
+  seoTitle        String?
+  metaDescription String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Media {
+  id         String   @id @default(cuid())
+  url        String
+  altText    String?
+  type       String
+  size       Int?
+  uploadedBy String?
+  createdAt  DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  postId    String?
+  referrer  String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([postId])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actorEmail String?
+  action     String
+  entityType String
+  entityId   String?
+  summary    String
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([action])
+  @@index([entityType])
+}
+
+model Setting {
+  key       String   @id
+  valueJson Json
+  updatedAt DateTime @updatedAt
+}
+
+model AiWorkflow {
+  id           String   @id @default(cuid())
+  name         String
+  promptConfig Json
+  autoPublish  Boolean  @default(false)
+  scheduleRule String?
+  active       Boolean  @default(true)
+  jobs         AiJob[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AiJob {
+  id         String      @id @default(cuid())
+  workflowId String?
+  topic      String
+  status     String      @default("queued")
+  inputJson  Json?
+  outputJson Json?
+  errorLog   String?
+  postId     String?
+  workflow   AiWorkflow? @relation(fields: [workflowId], references: [id])
+  post       Post?       @relation(fields: [postId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model PostRevision {
+  id              String   @id @default(cuid())
+  postId          String
+  contentSnapshot String
+  editorId        String?
+  post            Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+}

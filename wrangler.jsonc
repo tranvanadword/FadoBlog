@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "fadoblog",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "FADOBLOG_DATA_BACKEND": "d1"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "fadoblog",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "cloudflare/d1/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FADOBLOG_MEDIA",
+      "bucket_name": "fadoblog-media"
+    }
+  ]
+}
