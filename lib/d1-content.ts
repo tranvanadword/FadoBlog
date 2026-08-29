@@ -20,6 +20,81 @@ import type {
   Tag,
 } from "./types";
 
+type PostInputShape = {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  status: PostStatus;
+  coverImage: string;
+  categorySlug: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  tags: string[];
+};
+
+type PageInputShape = {
+  title: string;
+  slug: string;
+  content: string;
+  status: PostStatus;
+  seoTitle?: string;
+  metaDescription?: string;
+};
+
+export type D1ContentStore = {
+  getSiteSettings(): Promise<SiteSettings>;
+  updateSiteSettings(input: SiteSettings): Promise<SiteSettings>;
+  listCategories(): Promise<Category[]>;
+  getCategoryBySlug(slug: string): Promise<Category | undefined>;
+  getCategoryById(categoryId: string): Promise<Category | undefined>;
+  createCategory(input: { name: string; slug: string; description: string }): Promise<Category>;
+  updateCategory(categoryId: string, input: { name: string; slug: string; description: string }): Promise<Category>;
+  deleteCategory(categoryId: string): Promise<void>;
+  listTags(): Promise<Tag[]>;
+  getTagBySlug(slug: string): Promise<Tag | undefined>;
+  getTagById(tagId: string): Promise<Tag | undefined>;
+  createTag(input: { name: string; slug: string }): Promise<Tag>;
+  updateTag(tagId: string, input: { name: string; slug: string }): Promise<Tag>;
+  deleteTag(tagId: string): Promise<void>;
+  listPublishedPosts(): Promise<Post[]>;
+  getPostBySlug(slug: string): Promise<Post | undefined>;
+  listPostsByCategory(slug: string): Promise<Post[]>;
+  listPostsByTag(slug: string): Promise<Post[]>;
+  listAdminPosts(): Promise<Post[]>;
+  getAdminPostById(postId: string): Promise<Post | undefined>;
+  createPost(input: PostInputShape): Promise<Post>;
+  updatePost(postId: string, input: PostInputShape): Promise<Post>;
+  deletePost(postId: string): Promise<void>;
+  listPostRevisions(postId: string): Promise<PostRevision[]>;
+  getPostRevisionById(revisionId: string): Promise<PostRevision | undefined>;
+  listPages(): Promise<StaticPage[]>;
+  listPublishedPages(): Promise<StaticPage[]>;
+  getPageBySlug(slug: string): Promise<StaticPage | undefined>;
+  getAdminPageById(pageId: string): Promise<StaticPage | undefined>;
+  createPage(input: PageInputShape): Promise<StaticPage>;
+  updatePage(pageId: string, input: PageInputShape): Promise<StaticPage>;
+  deletePage(pageId: string): Promise<void>;
+  listMedia(): Promise<MediaItem[]>;
+  createMedia(input: { url: string; altText: string; type: string; size: number; uploadedBy?: string }): Promise<MediaItem>;
+  deleteMedia(mediaId: string): Promise<void>;
+  listContactMessages(): Promise<ContactMessage[]>;
+  createContactMessage(input: { name: string; email: string; subject: string; message: string }): Promise<ContactMessage>;
+  updateContactMessageStatus(messageId: string, status: ContactMessageStatus): Promise<ContactMessage>;
+  recordPageView(input: { path: string; postId?: string; referrer?: string; userAgent?: string }): Promise<PageView>;
+  listPageViews(limit?: number): Promise<PageView[]>;
+  recordAuditLog(input: {
+    actorId?: string;
+    actorEmail?: string;
+    action: AuditLog["action"];
+    entityType: string;
+    entityId?: string;
+    summary: string;
+  }): Promise<AuditLog>;
+  listAuditLogs(limit?: number): Promise<AuditLog[]>;
+  getAnalyticsSummary(): Promise<AnalyticsSummary>;
+};
+
 type D1PostRow = {
   id: string;
   title: string;
@@ -51,8 +126,6 @@ type D1PageRow = {
   metaDescription: string | null;
   updatedAt: string;
 };
-
-type D1WorkflowConfig = Record<string, unknown>;
 
 function id(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
@@ -307,11 +380,11 @@ async function queryPosts(db: D1Database, whereSql = "", binds: unknown[] = []) 
   return result.results.map(mapPost);
 }
 
-export async function getD1Store() {
+export async function getD1Store(): Promise<D1ContentStore | null> {
   const db = await getD1Database();
   if (!db) return null;
 
-  return {
+  const store: D1ContentStore = {
     async getSiteSettings() {
       const row = await db.prepare("SELECT valueJson FROM Setting WHERE key = 'site-settings' OR key = 'site' ORDER BY key DESC LIMIT 1").first<{
         valueJson: string;
@@ -720,4 +793,6 @@ export async function getD1Store() {
       };
     },
   };
+
+  return store;
 }

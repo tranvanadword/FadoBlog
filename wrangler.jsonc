@@ -18,14 +18,8 @@
     {
       "binding": "DB",
       "database_name": "fadoblog",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "e7ea4a27-ae6a-4458-863c-ed8a948dfe5e",
       "migrations_dir": "cloudflare/d1/migrations"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "FADOBLOG_MEDIA",
-      "bucket_name": "fadoblog-media"
     }
   ]
 }

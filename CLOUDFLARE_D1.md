@@ -28,6 +28,8 @@ pnpm exec wrangler r2 bucket create fadoblog-media
 
 Bucket nay da duoc khai bao san trong `wrangler.jsonc` voi binding `FADOBLOG_MEDIA`.
 
+Neu Cloudflare bao `Please enable R2 through the Cloudflare Dashboard`, hay bat R2 trong Dashboard truoc. Tam thoi co the deploy khong can R2; media metadata van luu D1, con upload file that se gan R2 sau.
+
 ## 3. Chay migration D1
 
 Chay local truoc:

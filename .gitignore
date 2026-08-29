@@ -14,5 +14,6 @@ coverage/
 outputs/
 package-lock.json
 tsconfig.tsbuildinfo
+.deploy-cloudflare-temp/
 public/uploads/*
 !public/uploads/.gitkeep
