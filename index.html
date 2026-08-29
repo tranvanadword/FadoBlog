@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FadoBlog</title>
+    <meta name="description" content="FadoBlog la khong gian chia se bai viet ve du lich, am thuc va doi song.">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Dieu huong chinh">
+        <a class="brand" href="#home" aria-label="FadoBlog trang chu">
+          <span class="brand-mark">F</span>
+          <span>FadoBlog</span>
+        </a>
+        <div class="nav-links">
+          <a href="#posts">Bai viet</a>
+          <a href="#topics">Chu de</a>
+          <a href="#newsletter">Theo doi</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">Blog du lich va doi song</p>
+          <h1>FadoBlog</h1>
+          <p>Ghi lai nhung hanh trinh nho, quan ngon dang thu va cac y tuong giup moi ngay gon gang hon.</p>
+          <a class="primary-action" href="#posts">Doc bai moi</a>
+        </div>
+      </section>
+
+      <section class="section" id="posts" aria-labelledby="posts-title">
+        <div class="section-heading">
+          <p class="eyebrow">Moi cap nhat</p>
+          <h2 id="posts-title">Bai viet noi bat</h2>
+        </div>
+        <div class="post-grid">
+          <article class="post-card">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Con duong nho dan ve phia nui luc binh minh">
+            <div class="post-card-body">
+              <p class="post-meta">Du lich - 6 phut doc</p>
+              <h3>Mot ngay cham rai o thanh pho bien</h3>
+              <p>Lich trinh nhe nhang cho mot ngay co ca ca phe sang, cho dia phuong va hoang hon ben bo nuoc.</p>
+            </div>
+          </article>
+          <article class="post-card">
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=900&q=80" alt="Ban an voi nhieu mon rau cu tuoi">
+            <div class="post-card-body">
+              <p class="post-meta">Am thuc - 4 phut doc</p>
+              <h3>Nhung mon nen thu khi ghe cho sang</h3>
+              <p>Cach chon mon, noi hoi gia va vai quan nho de bat dau mot buoi sang day nang luong.</p>
+            </div>
+          </article>
+          <article class="post-card">
+            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=80" alt="So tay va may tinh tren ban lam viec">
+            <div class="post-card-body">
+              <p class="post-meta">Doi song - 5 phut doc</p>
+              <h3>Ghi chu de y tuong khong bi roi</h3>
+              <p>Mot he thong ghi nhanh don gian cho nguoi hay di chuyen va hay co y tuong bat chot.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="topics" id="topics" aria-labelledby="topics-title">
+        <div>
+          <p class="eyebrow">Danh muc</p>
+          <h2 id="topics-title">Chu de dang viet</h2>
+        </div>
+        <div class="topic-list">
+          <span>Du lich</span>
+          <span>Am thuc</span>
+          <span>Doi song</span>
+          <span>Goc lam viec</span>
+        </div>
+      </section>
+
+      <section class="newsletter" id="newsletter" aria-labelledby="newsletter-title">
+        <div>
+          <p class="eyebrow">Theo doi</p>
+          <h2 id="newsletter-title">Nhan bai viet moi</h2>
+          <p>Dang ky de nhan ghi chu moi khi FadoBlog co bai dang.</p>
+        </div>
+        <form class="signup-form">
+          <label class="visually-hidden" for="email">Email</label>
+          <input id="email" type="email" name="email" placeholder="email@example.com" required>
+          <button type="submit">Dang ky</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 FadoBlog. Built locally with care.</p>
+    </footer>
+  </body>
+</html>
