@@ -79,6 +79,31 @@ pnpm cf:deploy
 
 Neu build OpenNext tren Windows bi loi doc thu muc trong `.open-next`, hay chay cac lenh Cloudflare trong WSL hoac CI Linux. Next build cua app van co the pass tren Windows, nhung adapter OpenNext hien co canh bao khong tuong thich hoan toan voi Windows.
 
+## 6. Deploy bang GitHub Actions
+
+Workflow `.github/workflows/cloudflare-deploy.yml` da duoc them san. De workflow chay duoc, cau hinh trong GitHub repo:
+
+Secrets:
+
+```text
+CLOUDFLARE_API_TOKEN
+CLOUDFLARE_ACCOUNT_ID
+NEXTAUTH_SECRET
+ADMIN_EMAIL
+ADMIN_PASSWORD
+OPENAI_API_KEY
+CRON_SECRET
+```
+
+Variables:
+
+```text
+NEXTAUTH_URL
+NEXT_PUBLIC_SITE_URL
+```
+
+Truoc khi workflow deploy, can thay `REPLACE_WITH_D1_DATABASE_ID` trong `wrangler.jsonc` bang database id that cua D1.
+
 ## Ghi chu hien tai
 
 FadoBlog hien dang co 3 che do du lieu:
