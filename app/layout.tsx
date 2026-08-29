@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import { getSiteSettings } from "@/lib/content";
-import { buildSeo } from "@/lib/seo";
 import "./globals.css";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
-  return buildSeo({
-    title: settings.defaultSeoTitle,
-    description: settings.defaultMetaDescription,
-    settings,
-  });
-}
+export const metadata: Metadata = {
+  title: "FadoBlog",
+  description: "Tin tuc, cong nghe, du lich, am thuc va doi song.",
+};
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
