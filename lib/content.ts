@@ -34,6 +34,7 @@ import { defaultSiteSettings, readLocalContent, writeLocalContent, type LocalCon
 import { toSlug } from "./slug";
 import { toPlainText } from "./html";
 import { getD1Store } from "./d1-content";
+import { getD1Database } from "./cloudflare";
 
 type DbPost = {
   id: string;
@@ -384,6 +385,61 @@ function mapDbAiWorkflow(workflow: DbAiWorkflow): AiWorkflow {
     lastRunStatus: config.lastRunStatus,
     createdAt: workflow.createdAt.toISOString().slice(0, 10),
     updatedAt: workflow.updatedAt.toISOString().slice(0, 10),
+  };
+}
+
+function parseJsonObject(value: string | null | undefined): Record<string, unknown> {
+  if (!value) return {};
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    return typeof parsed === "object" && parsed ? (parsed as Record<string, unknown>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function mapD1AiWorkflow(workflow: {
+  id: string;
+  name: string;
+  promptConfig: string | null;
+  autoPublish: number;
+  scheduleRule: string | null;
+  active: number;
+  createdAt: string;
+  updatedAt: string;
+}): AiWorkflow {
+  const config = getWorkflowConfig({
+    id: workflow.id,
+    name: workflow.name,
+    promptConfig: parseJsonObject(workflow.promptConfig),
+    autoPublish: Boolean(workflow.autoPublish),
+    scheduleRule: workflow.scheduleRule,
+    active: Boolean(workflow.active),
+    createdAt: new Date(workflow.createdAt),
+    updatedAt: new Date(workflow.updatedAt),
+  });
+
+  return {
+    id: workflow.id,
+    name: workflow.name,
+    ...config,
+    scheduleRule: workflow.scheduleRule ?? "",
+    active: Boolean(workflow.active),
+    autoPublish: Boolean(workflow.autoPublish),
+    createdAt: workflow.createdAt.slice(0, 10),
+    updatedAt: workflow.updatedAt.slice(0, 10),
+  };
+}
+
+function d1WorkflowPromptConfig(input: AiWorkflowInput, current?: Partial<AiWorkflow>) {
+  return {
+    topicTemplate: input.topicTemplate,
+    categorySlug: input.categorySlug,
+    tone: input.tone,
+    notes: input.notes,
+    targetStatus: input.targetStatus,
+    lastRunAt: current?.lastRunAt ?? null,
+    lastRunStatus: current?.lastRunStatus ?? null,
   };
 }
 
@@ -1262,7 +1318,25 @@ export async function deletePage(id: string) {
 
 export async function listAiWorkflows() {
   const prisma = getPrismaClient();
-  if (!prisma) return (await readLocalContent()).aiWorkflows;
+  if (!prisma) {
+    const d1 = await getD1Database();
+    if (d1) {
+      const workflows = await d1
+        .prepare("SELECT id, name, promptConfig, autoPublish, scheduleRule, active, createdAt, updatedAt FROM AiWorkflow ORDER BY updatedAt DESC")
+        .all<{
+          id: string;
+          name: string;
+          promptConfig: string | null;
+          autoPublish: number;
+          scheduleRule: string | null;
+          active: number;
+          createdAt: string;
+          updatedAt: string;
+        }>();
+      return workflows.results.map(mapD1AiWorkflow);
+    }
+    return (await readLocalContent()).aiWorkflows;
+  }
 
   const workflows = await prisma.aiWorkflow.findMany({ orderBy: { updatedAt: "desc" } });
   return workflows.map((workflow) => mapDbAiWorkflow(workflow as DbAiWorkflow));
@@ -1273,6 +1347,28 @@ export async function createAiWorkflow(input: AiWorkflowInput) {
   const now = new Date().toISOString().slice(0, 10);
 
   if (!prisma) {
+    const d1 = await getD1Database();
+    if (d1) {
+      const workflowId = `ai-workflow-${crypto.randomUUID()}`;
+      const timestamp = new Date().toISOString();
+      await d1
+        .prepare(
+          "INSERT INTO AiWorkflow (id, name, promptConfig, autoPublish, scheduleRule, active, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        )
+        .bind(
+          workflowId,
+          input.name,
+          JSON.stringify(d1WorkflowPromptConfig(input)),
+          input.autoPublish ? 1 : 0,
+          input.scheduleRule,
+          input.active ? 1 : 0,
+          timestamp,
+          timestamp,
+        )
+        .run();
+      return (await listAiWorkflows()).find((workflow) => workflow.id === workflowId);
+    }
+
     const content = await readLocalContent();
     const workflow: AiWorkflow = {
       id: `ai-workflow-${Date.now()}`,
@@ -1309,6 +1405,24 @@ export async function updateAiWorkflow(id: string, input: AiWorkflowInput) {
   const prisma = getPrismaClient();
 
   if (!prisma) {
+    const d1 = await getD1Database();
+    if (d1) {
+      const existing = (await listAiWorkflows()).find((workflow) => workflow.id === id);
+      await d1
+        .prepare("UPDATE AiWorkflow SET name = ?, promptConfig = ?, autoPublish = ?, scheduleRule = ?, active = ?, updatedAt = ? WHERE id = ?")
+        .bind(
+          input.name,
+          JSON.stringify(d1WorkflowPromptConfig(input, existing)),
+          input.autoPublish ? 1 : 0,
+          input.scheduleRule,
+          input.active ? 1 : 0,
+          new Date().toISOString(),
+          id,
+        )
+        .run();
+      return (await listAiWorkflows()).find((workflow) => workflow.id === id);
+    }
+
     const content = await readLocalContent();
     const workflows = content.aiWorkflows.map((workflow) =>
       workflow.id === id ? { ...workflow, ...input, updatedAt: new Date().toISOString().slice(0, 10) } : workflow,
@@ -1341,6 +1455,14 @@ export async function toggleAiWorkflow(id: string) {
   const prisma = getPrismaClient();
 
   if (!prisma) {
+    const d1 = await getD1Database();
+    if (d1) {
+      const existing = (await listAiWorkflows()).find((workflow) => workflow.id === id);
+      if (!existing) return undefined;
+      await d1.prepare("UPDATE AiWorkflow SET active = ?, updatedAt = ? WHERE id = ?").bind(existing.active ? 0 : 1, new Date().toISOString(), id).run();
+      return (await listAiWorkflows()).find((workflow) => workflow.id === id);
+    }
+
     const content = await readLocalContent();
     const workflows = content.aiWorkflows.map((workflow) =>
       workflow.id === id
@@ -1366,6 +1488,12 @@ export async function deleteAiWorkflow(id: string) {
   const prisma = getPrismaClient();
 
   if (!prisma) {
+    const d1 = await getD1Database();
+    if (d1) {
+      await d1.prepare("DELETE FROM AiWorkflow WHERE id = ?").bind(id).run();
+      return;
+    }
+
     const content = await readLocalContent();
     await writeLocalContent({ ...content, aiWorkflows: content.aiWorkflows.filter((workflow) => workflow.id !== id) });
     return;
@@ -1379,6 +1507,29 @@ async function markAiWorkflowRun(id: string, status: "generated" | "failed") {
   const lastRunAt = new Date().toISOString();
 
   if (!prisma) {
+    const d1 = await getD1Database();
+    if (d1) {
+      const workflow = (await listAiWorkflows()).find((item) => item.id === id);
+      if (!workflow) return;
+      await d1
+        .prepare("UPDATE AiWorkflow SET promptConfig = ?, updatedAt = ? WHERE id = ?")
+        .bind(
+          JSON.stringify({
+            topicTemplate: workflow.topicTemplate,
+            categorySlug: workflow.categorySlug,
+            tone: workflow.tone,
+            notes: workflow.notes,
+            targetStatus: workflow.targetStatus,
+            lastRunAt,
+            lastRunStatus: status,
+          }),
+          lastRunAt,
+          id,
+        )
+        .run();
+      return;
+    }
+
     const content = await readLocalContent();
     const aiWorkflows = content.aiWorkflows.map((workflow) =>
       workflow.id === id
@@ -1502,7 +1653,46 @@ export async function runDueAiWorkflows(now = new Date()): Promise<ScheduledWork
 
 export async function listAiJobs() {
   const prisma = getPrismaClient();
-  if (!prisma) return (await readLocalContent()).aiJobs;
+  if (!prisma) {
+    const d1 = await getD1Database();
+    if (d1) {
+      const jobs = await d1
+        .prepare("SELECT id, workflowId, topic, status, inputJson, outputJson, errorLog, postId, createdAt FROM AiJob ORDER BY createdAt DESC LIMIT 20")
+        .all<{
+          id: string;
+          workflowId: string | null;
+          topic: string;
+          status: string;
+          inputJson: string | null;
+          outputJson: string | null;
+          errorLog: string | null;
+          postId: string | null;
+          createdAt: string;
+        }>();
+
+      return jobs.results.map((job): AiJob => {
+        const input = parseJsonObject(job.inputJson);
+        const output = parseJsonObject(job.outputJson);
+        return {
+          id: job.id,
+          workflowId: job.workflowId ?? undefined,
+          topic: job.topic,
+          categorySlug: "categorySlug" in input ? String(input.categorySlug) : "",
+          tone:
+            input.tone === "guide" || input.tone === "review"
+              ? input.tone
+              : "news",
+          notes: "notes" in input ? String(input.notes) : "",
+          status: job.status === "failed" ? "failed" : "generated",
+          source: output.source === "openai" ? "openai" : "mock",
+          postId: job.postId ?? undefined,
+          error: job.errorLog ?? undefined,
+          createdAt: job.createdAt.slice(0, 10),
+        };
+      });
+    }
+    return (await readLocalContent()).aiJobs;
+  }
 
   const jobs = await prisma.aiJob.findMany({
     orderBy: { createdAt: "desc" },
