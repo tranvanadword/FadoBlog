@@ -1,11 +1,10 @@
 "use server";
 
-import { mkdir, unlink, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { canDeleteContent, canManageMedia, getCurrentAdminRole } from "@/lib/auth";
 import { createMedia, deleteMedia, listMedia } from "@/lib/content";
+import { deleteMediaObject, mediaKeyFromUrl, mediaUrlForKey, saveMediaObject } from "@/lib/media-storage";
 import { toSlug } from "@/lib/slug";
 
 const allowedTypes = new Map([
@@ -46,14 +45,12 @@ export async function uploadMediaAction(formData: FormData) {
   const extension = allowedTypes.get(file.type);
   const safeName = toSlug(file.name.replace(/\.[^.]+$/, "")) || "upload";
   const filename = `${safeName}-${Date.now()}.${extension}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  const targetPath = path.join(uploadDir, filename);
+  const key = `uploads/${filename}`;
 
-  await mkdir(uploadDir, { recursive: true });
-  await writeFile(targetPath, Buffer.from(await file.arrayBuffer()));
+  await saveMediaObject({ key, file, contentType: file.type });
 
   await createMedia({
-    url: `/uploads/${filename}`,
+    url: mediaUrlForKey(key),
     altText,
     type: file.type,
     size: file.size,
@@ -72,10 +69,8 @@ export async function deleteMediaAction(id: string) {
   const media = (await listMedia()).find((item) => item.id === id);
   await deleteMedia(id);
 
-  if (media?.url.startsWith("/uploads/")) {
-    const targetPath = path.join(process.cwd(), "public", media.url);
-    await unlink(targetPath).catch(() => undefined);
-  }
+  const mediaKey = media ? mediaKeyFromUrl(media.url) : null;
+  if (mediaKey) await deleteMediaObject(mediaKey);
 
   revalidatePath("/admin/media");
   revalidatePath("/admin/posts/new");

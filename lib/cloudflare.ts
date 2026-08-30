@@ -6,7 +6,7 @@ type CloudflareBindingStatus = {
 type CloudflareContext = {
   env?: {
     DB?: D1Database;
-    FADOBLOG_MEDIA?: unknown;
+    FADOBLOG_MEDIA?: R2Bucket;
   };
 };
 
@@ -24,6 +24,11 @@ export async function getD1Database() {
 
   const context = await getCloudflareContextSafe();
   return context?.env?.DB ?? null;
+}
+
+export async function getMediaBucket() {
+  const context = await getCloudflareContextSafe();
+  return context?.env?.FADOBLOG_MEDIA ?? null;
 }
 
 export async function getCloudflareBindingStatus(): Promise<CloudflareBindingStatus> {

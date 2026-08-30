@@ -35,7 +35,7 @@ export default async function AdminMediaPage({
         <div className="panel-heading">
           <div>
             <h2>Upload ảnh</h2>
-            <p>Ảnh upload sẽ được lưu trong public/uploads và có URL dùng làm ảnh đại diện bài viết.</p>
+            <p>Ảnh upload sẽ được lưu trong Cloudflare R2 khi deploy, với URL dùng làm ảnh đại diện bài viết.</p>
           </div>
         </div>
 

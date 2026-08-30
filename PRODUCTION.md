@@ -82,7 +82,7 @@ Do not pass `CRON_SECRET` in the URL query string. Use the `Authorization` heade
 Before launch, prepare backups for:
 
 - PostgreSQL database.
-- `public/uploads` media files.
+- Cloudflare R2 bucket `fadoblog-media` or `public/uploads` media files when running locally.
 - Environment variables.
 
 Run a restore test at least once before using the site for real content.
