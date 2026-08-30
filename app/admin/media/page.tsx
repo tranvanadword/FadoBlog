@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { canDeleteContent, canManageMedia, getCurrentAdminRole } from "@/lib/auth";
 import { listMedia } from "@/lib/content";
-import { deleteMediaAction, uploadMediaAction } from "./actions";
+import { deleteMediaAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +43,7 @@ export default async function AdminMediaPage({
 
         {params.error ? <p className="login-error">{errorMessages[params.error] ?? "Không upload được ảnh."}</p> : null}
 
-        <form action={uploadMediaAction} className="editor-form compact-form">
+        <form action="/admin/media/upload" method="post" encType="multipart/form-data" className="editor-form compact-form">
           <label>
             File ảnh
             <input name="file" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required />
