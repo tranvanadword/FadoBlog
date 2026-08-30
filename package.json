@@ -38,6 +38,7 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "dotenv": "^17.4.2",
     "typescript": "latest",
     "wrangler": "^4.127.1"
   }
