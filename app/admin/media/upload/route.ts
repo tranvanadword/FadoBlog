@@ -26,6 +26,12 @@ function readString(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
 }
 
+function uploadMonthKey(date = new Date()) {
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  return `${year}${month}`;
+}
+
 async function ensureCanUpload(request: NextRequest) {
   const token = request.cookies.get(adminSessionCookie)?.value;
   const user = await getCurrentAdminUserFromToken(token);
@@ -56,7 +62,7 @@ export async function POST(request: NextRequest) {
   const extension = allowedTypes.get(file.type);
   const safeName = toSlug(file.name.replace(/\.[^.]+$/, "")) || "upload";
   const filename = `${safeName}-${Date.now()}.${extension}`;
-  const key = `uploads/${filename}`;
+  const key = `uploads/${uploadMonthKey()}/${filename}`;
 
   try {
     await saveMediaObject({ key, file, contentType: file.type });
