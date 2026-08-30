@@ -14,6 +14,7 @@ export async function GET() {
     database: db.provider,
     cloudflareD1: cloudflare.d1 ? "bound" : "not-bound",
     cloudflareR2: cloudflare.r2 ? "bound" : "not-bound",
+    cloudflareMediaKv: cloudflare.mediaKv ? "bound" : "not-bound",
     publicUrl: settings.publicUrl,
     openAi: process.env.OPENAI_API_KEY ? "configured" : "missing",
     cronSecret: process.env.CRON_SECRET ? "configured" : "required",

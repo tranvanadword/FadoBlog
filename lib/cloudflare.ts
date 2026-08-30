@@ -1,12 +1,14 @@
 type CloudflareBindingStatus = {
   d1: boolean;
   r2: boolean;
+  mediaKv: boolean;
 };
 
 type CloudflareContext = {
   env?: {
     DB?: D1Database;
     FADOBLOG_MEDIA?: R2Bucket;
+    FADOBLOG_MEDIA_KV?: KVNamespace;
   };
 };
 
@@ -31,6 +33,11 @@ export async function getMediaBucket() {
   return context?.env?.FADOBLOG_MEDIA ?? null;
 }
 
+export async function getMediaKvNamespace() {
+  const context = await getCloudflareContextSafe();
+  return context?.env?.FADOBLOG_MEDIA_KV ?? null;
+}
+
 export async function getCloudflareBindingStatus(): Promise<CloudflareBindingStatus> {
   try {
     const context = await getCloudflareContextSafe();
@@ -38,11 +45,13 @@ export async function getCloudflareBindingStatus(): Promise<CloudflareBindingSta
     return {
       d1: Boolean(context?.env?.DB),
       r2: Boolean(context?.env?.FADOBLOG_MEDIA),
+      mediaKv: Boolean(context?.env?.FADOBLOG_MEDIA_KV),
     };
   } catch {
     return {
       d1: false,
       r2: false,
+      mediaKv: false,
     };
   }
 }
