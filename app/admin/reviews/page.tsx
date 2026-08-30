@@ -1,4 +1,4 @@
-import { CheckCircle2, FilePenLine, RotateCcw } from "lucide-react";
+import { CheckCircle2, ClipboardList, FilePenLine, FileText, RotateCcw, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -22,18 +22,30 @@ export default async function AdminReviewsPage() {
       <div className="metric-grid">
         <div className="metric-card">
           <span>Chờ duyệt</span>
+          <span className="metric-icon yellow">
+            <ClipboardList size={20} strokeWidth={1.9} />
+          </span>
           <strong>{pendingPosts.length}</strong>
         </div>
         <div className="metric-card">
           <span>Nháp</span>
+          <span className="metric-icon">
+            <FilePenLine size={20} strokeWidth={1.9} />
+          </span>
           <strong>{draftPosts.length}</strong>
         </div>
         <div className="metric-card">
           <span>Có thể xuất bản</span>
+          <span className="metric-icon green">
+            <ShieldCheck size={20} strokeWidth={1.9} />
+          </span>
           <strong>{pendingPosts.filter((post) => post.title && post.content).length}</strong>
         </div>
         <div className="metric-card">
           <span>Tổng bài</span>
+          <span className="metric-icon cyan">
+            <FileText size={20} strokeWidth={1.9} />
+          </span>
           <strong>{posts.length}</strong>
         </div>
       </div>
@@ -44,6 +56,9 @@ export default async function AdminReviewsPage() {
             <h2>Hàng chờ duyệt</h2>
             <p>Bài viết từ AI workflow hoặc author sẽ được kiểm tra tại đây trước khi xuất bản.</p>
           </div>
+          <span className="admin-panel-icon yellow">
+            <ClipboardList size={21} strokeWidth={1.9} />
+          </span>
           <Link className="secondary-action small-action" href="/admin/posts">
             <FilePenLine size={15} strokeWidth={1.9} />
             Mở danh sách bài

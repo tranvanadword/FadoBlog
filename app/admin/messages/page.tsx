@@ -1,4 +1,4 @@
-import { Archive, MailCheck } from "lucide-react";
+import { Archive, Inbox, Mail, MailCheck, MessageSquareText } from "lucide-react";
 import { redirect } from "next/navigation";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { canManageSettings, getCurrentAdminRole } from "@/lib/auth";
@@ -33,18 +33,30 @@ export default async function AdminMessagesPage() {
       <div className="metric-grid">
         <div className="metric-card">
           <span>Tin mới</span>
+          <span className="metric-icon green">
+            <Inbox size={20} strokeWidth={1.9} />
+          </span>
           <strong>{newCount}</strong>
         </div>
         <div className="metric-card">
           <span>Đang xử lý</span>
+          <span className="metric-icon yellow">
+            <MessageSquareText size={20} strokeWidth={1.9} />
+          </span>
           <strong>{visibleMessages.length}</strong>
         </div>
         <div className="metric-card">
           <span>Đã lưu trữ</span>
+          <span className="metric-icon">
+            <Archive size={20} strokeWidth={1.9} />
+          </span>
           <strong>{messages.filter((message) => message.status === "archived").length}</strong>
         </div>
         <div className="metric-card">
           <span>Tổng tin</span>
+          <span className="metric-icon cyan">
+            <Mail size={20} strokeWidth={1.9} />
+          </span>
           <strong>{messages.length}</strong>
         </div>
       </div>
@@ -55,6 +67,9 @@ export default async function AdminMessagesPage() {
             <h2>Tin nhắn từ trang Liên hệ</h2>
             <p>Quản lý phản hồi, hợp tác và yêu cầu từ độc giả.</p>
           </div>
+          <span className="admin-panel-icon cyan">
+            <MailCheck size={21} strokeWidth={1.9} />
+          </span>
         </div>
 
         {visibleMessages.length === 0 ? (

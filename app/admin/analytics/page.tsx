@@ -1,4 +1,4 @@
-import { BarChart3, Eye, TrendingUp } from "lucide-react";
+import { BarChart3, CalendarDays, Clock3, Eye, FileText, MousePointerClick, Share2, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -35,18 +35,30 @@ export default async function AdminAnalyticsPage() {
       <div className="metric-grid">
         <div className="metric-card">
           <span>Tổng lượt xem</span>
+          <span className="metric-icon">
+            <Eye size={20} strokeWidth={1.9} />
+          </span>
           <strong>{summary.totalViews}</strong>
         </div>
         <div className="metric-card">
           <span>Lượt xem bài viết</span>
+          <span className="metric-icon cyan">
+            <FileText size={20} strokeWidth={1.9} />
+          </span>
           <strong>{summary.postViews}</strong>
         </div>
         <div className="metric-card">
           <span>Hôm nay</span>
+          <span className="metric-icon green">
+            <CalendarDays size={20} strokeWidth={1.9} />
+          </span>
           <strong>{summary.todayViews}</strong>
         </div>
         <div className="metric-card">
           <span>7 ngày gần đây</span>
+          <span className="metric-icon yellow">
+            <MousePointerClick size={20} strokeWidth={1.9} />
+          </span>
           <strong>{summary.last7DaysViews}</strong>
         </div>
       </div>
@@ -58,7 +70,9 @@ export default async function AdminAnalyticsPage() {
               <h2>Top bài viết</h2>
               <p>Các bài đang có lượt đọc cao nhất.</p>
             </div>
-            <TrendingUp size={22} strokeWidth={1.8} />
+            <span className="admin-panel-icon">
+              <TrendingUp size={21} strokeWidth={1.9} />
+            </span>
           </div>
           {summary.topPosts.length === 0 ? (
             <div className="empty-state compact-empty">
@@ -90,6 +104,9 @@ export default async function AdminAnalyticsPage() {
               <h2>Nguồn truy cập</h2>
               <p>Nguồn referrer cơ bản từ các lượt xem đã ghi nhận.</p>
             </div>
+            <span className="admin-panel-icon cyan">
+              <Share2 size={21} strokeWidth={1.9} />
+            </span>
           </div>
           {summary.referrers.length === 0 ? (
             <p className="page-intro">Chưa có dữ liệu nguồn truy cập.</p>
@@ -112,6 +129,9 @@ export default async function AdminAnalyticsPage() {
             <h2>Lượt xem gần đây</h2>
             <p>Dòng sự kiện mới nhất từ public site.</p>
           </div>
+          <span className="admin-panel-icon green">
+            <Clock3 size={21} strokeWidth={1.9} />
+          </span>
         </div>
         {summary.recentViews.length === 0 ? (
           <div className="empty-state compact-empty">

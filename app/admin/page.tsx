@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AlertTriangle, Bot, CheckCircle2, ClipboardList, FileText, Gauge, Rocket, Sparkles } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import {
@@ -73,18 +74,30 @@ export default async function AdminDashboardPage({
       <div className="metric-grid">
         <div className="metric-card">
           <span>Tổng bài</span>
+          <span className="metric-icon">
+            <FileText size={20} strokeWidth={1.9} />
+          </span>
           <strong>{posts.length}</strong>
         </div>
         <div className="metric-card">
           <span>Đã đăng</span>
+          <span className="metric-icon green">
+            <CheckCircle2 size={20} strokeWidth={1.9} />
+          </span>
           <strong>{published}</strong>
         </div>
         <div className="metric-card">
           <span>Chờ duyệt</span>
+          <span className="metric-icon yellow">
+            <ClipboardList size={20} strokeWidth={1.9} />
+          </span>
           <strong>{pendingPosts.length}</strong>
         </div>
         <div className="metric-card">
           <span>Workflow bật</span>
+          <span className="metric-icon cyan">
+            <Bot size={20} strokeWidth={1.9} />
+          </span>
           <strong>{activeWorkflows.length}</strong>
         </div>
       </div>
@@ -96,6 +109,9 @@ export default async function AdminDashboardPage({
               <h2>Việc cần xử lý</h2>
               <p>Bài chờ duyệt và draft mới nhất.</p>
             </div>
+            <span className="admin-panel-icon yellow">
+              <ClipboardList size={21} strokeWidth={1.9} />
+            </span>
             <Link className="secondary-action small-action" href="/admin/posts">
               Mở bài viết
             </Link>
@@ -120,6 +136,9 @@ export default async function AdminDashboardPage({
               <h2>Cảnh báo</h2>
               <p>Các điểm nên hoàn thiện trước khi production.</p>
             </div>
+            <span className="admin-panel-icon red">
+              <AlertTriangle size={21} strokeWidth={1.9} />
+            </span>
           </div>
           {warnings.length === 0 ? (
             <p className="success-message">Cấu hình hiện tại ổn.</p>
@@ -139,6 +158,9 @@ export default async function AdminDashboardPage({
             <h2>Tình trạng nội dung</h2>
             <p>Phân bố bài viết theo trạng thái.</p>
           </div>
+            <span className="admin-panel-icon">
+              <Gauge size={21} strokeWidth={1.9} />
+            </span>
         </div>
         <div className="status-overview">
           {countByStatus(posts).map((item) => (
@@ -157,6 +179,9 @@ export default async function AdminDashboardPage({
               <h2>AI jobs gần đây</h2>
               <p>Theo dõi các lần sinh bài gần nhất.</p>
             </div>
+            <span className="admin-panel-icon cyan">
+              <Sparkles size={21} strokeWidth={1.9} />
+            </span>
             {canUseAiWorkflow(role) ? (
               <Link className="secondary-action small-action" href="/admin/ai-workflows">
                 Mở workflow
@@ -185,6 +210,9 @@ export default async function AdminDashboardPage({
               <h2>Workflow đang bật</h2>
               <p>Những luồng có thể chạy thủ công hoặc theo lịch.</p>
             </div>
+            <span className="admin-panel-icon green">
+              <Rocket size={21} strokeWidth={1.9} />
+            </span>
           </div>
           {activeWorkflows.length === 0 ? (
             <p className="page-intro">Chưa có workflow nào đang bật.</p>
