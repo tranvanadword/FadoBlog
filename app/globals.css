@@ -621,19 +621,23 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   top: 0;
   z-index: 9;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 18px;
-  margin: 0 -40px 36px;
+  margin: 0 -40px 30px;
   border-bottom: 1px solid var(--admin-line);
   padding: 16px 24px;
   background: rgba(10, 17, 31, .92);
   backdrop-filter: blur(14px);
 }
 .admin-search {
+  flex: 1 1 300px;
   display: flex;
   align-items: center;
   gap: 10px;
-  width: min(540px, 100%);
+  width: auto;
+  min-width: 240px;
+  max-width: 540px;
   border: 1px solid var(--admin-line);
   border-radius: 16px;
   padding: 0 12px;
@@ -654,6 +658,59 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   display: flex;
   align-items: center;
   gap: 10px;
+}
+.admin-quick-actions {
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+.admin-quick-actions form {
+  margin: 0;
+}
+.admin-user-summary {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 10px;
+  min-height: 38px;
+  border: 1px solid var(--admin-line);
+  border-radius: 999px;
+  padding: 4px 6px 4px 4px;
+  color: var(--admin-text);
+  background: rgba(255, 255, 255, .05);
+}
+.admin-user-avatar {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 999px;
+  color: #d8d1ff;
+  background: rgba(124, 92, 255, .22);
+  font-size: .74rem;
+  font-weight: 900;
+}
+.admin-user-copy {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+.admin-user-copy strong,
+.admin-user-copy small {
+  overflow: hidden;
+  max-width: 118px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-user-copy strong {
+  color: var(--admin-text);
+  font-size: .7rem;
+  line-height: 1.1;
+}
+.admin-user-copy small {
+  color: var(--admin-muted);
+  font-size: .6rem;
+  line-height: 1.1;
 }
 .icon-button {
   position: relative;
@@ -681,7 +738,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   font-weight: 900;
 }
 .admin-topbar {
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 24px;
 }
 .admin-topbar .eyebrow {
@@ -719,9 +776,14 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   border: 1px solid rgba(248, 113, 113, .35);
 }
 .role-pill {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 10px;
   color: #d8d1ff;
   background: rgba(124, 92, 255, .16);
   border: 1px solid rgba(124, 92, 255, .4);
+  font-size: .62rem;
+  white-space: nowrap;
 }
 .admin-shell .metric-card,
 .admin-shell .admin-panel,

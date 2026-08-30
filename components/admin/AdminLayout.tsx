@@ -29,6 +29,20 @@ export async function AdminLayout({ children, title }: { children: ReactNode; ti
               <Globe2 size={17} strokeWidth={1.9} />
               Xem website
             </Link>
+            <div className="admin-user-summary" aria-label="Thông tin quản trị">
+              <span className="admin-user-avatar">{user.name.slice(0, 1).toUpperCase()}</span>
+              <span className="admin-user-copy">
+                <strong>{user.name}</strong>
+                <small>{user.email}</small>
+              </span>
+              <span className="role-pill">{getRoleLabel(user.role)}</span>
+            </div>
+            <form action={logoutAction}>
+              <button className="secondary-action" type="submit">
+                <LogOut size={17} strokeWidth={1.9} />
+                Đăng xuất
+              </button>
+            </form>
           </div>
         </div>
 
@@ -36,15 +50,6 @@ export async function AdminLayout({ children, title }: { children: ReactNode; ti
           <div>
             <p className="eyebrow">FadoBlog CMS</p>
             <h1>{title}</h1>
-          </div>
-          <div className="admin-topbar-actions">
-            <span className="role-pill">{getRoleLabel(user.role)}</span>
-            <form action={logoutAction}>
-              <button className="secondary-action" type="submit">
-                <LogOut size={17} strokeWidth={1.9} />
-                Đăng xuất
-              </button>
-            </form>
           </div>
         </div>
         {children}
