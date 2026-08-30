@@ -38,15 +38,20 @@ export default async function AdminPostsPage({
             <span>{post.category.name}</span>
             <StatusBadge status={post.status} />
             <span>{post.publishedAt}</span>
-            {allowDelete ? (
-              <form action={deletePostAction.bind(null, post.id)}>
-                <button className="danger-button" type="submit">
-                  Xóa
-                </button>
-              </form>
-            ) : (
-              <span className="muted-text">Không có quyền</span>
-            )}
+            <div className="row-actions">
+              <Link className="secondary-action small-action" href={"/admin/posts/" + post.id + "/edit"}>
+                Sửa
+              </Link>
+              {allowDelete ? (
+                <form action={deletePostAction.bind(null, post.id)}>
+                  <button className="danger-button small-action" type="submit">
+                    Xóa
+                  </button>
+                </form>
+              ) : (
+                <span className="muted-text">Không có quyền</span>
+              )}
+            </div>
           </div>
         ))}
       </div>
