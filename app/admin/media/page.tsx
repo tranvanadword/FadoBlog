@@ -11,6 +11,8 @@ const errorMessages: Record<string, string> = {
   type: "Chỉ hỗ trợ JPG, PNG, WEBP hoặc GIF.",
   size: "Ảnh tối đa 5MB.",
   permission: "Vai trò hiện tại không có quyền thực hiện thao tác này.",
+  storage: "Không lưu được file ảnh lên Cloudflare storage.",
+  library: "Đã lưu file nhưng không ghi được vào thư viện media.",
 };
 
 function formatFileSize(size: number) {

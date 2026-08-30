@@ -47,15 +47,26 @@ export async function uploadMediaAction(formData: FormData) {
   const filename = `${safeName}-${Date.now()}.${extension}`;
   const key = `uploads/${filename}`;
 
-  await saveMediaObject({ key, file, contentType: file.type });
+  try {
+    await saveMediaObject({ key, file, contentType: file.type });
+  } catch (error) {
+    console.error("Failed to save media object", error);
+    redirect("/admin/media?error=storage");
+  }
 
-  await createMedia({
-    url: mediaUrlForKey(key),
-    altText,
-    type: file.type,
-    size: file.size,
-    uploadedBy: "FadoBlog Admin",
-  });
+  try {
+    await createMedia({
+      url: mediaUrlForKey(key),
+      altText,
+      type: file.type,
+      size: file.size,
+      uploadedBy: "FadoBlog Admin",
+    });
+  } catch (error) {
+    console.error("Failed to create media record", error);
+    await deleteMediaObject(key);
+    redirect("/admin/media?error=library");
+  }
 
   revalidatePath("/admin/media");
   revalidatePath("/admin/posts/new");
