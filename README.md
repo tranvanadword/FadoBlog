@@ -33,22 +33,6 @@ Sau đó mở:
 - Public site: http://localhost:3000
 - Admin CMS: http://localhost:3000/admin
 
-## Đăng nhập admin local
-
-```text
-Email: admin@fadoblog.local
-Password: fadoblog-admin
-```
-
-Có thể đổi trong `.env`:
-
-```text
-ADMIN_EMAIL="admin@fadoblog.local"
-ADMIN_PASSWORD="fadoblog-admin"
-```
-
-Khi deploy production, hãy đổi `NEXTAUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` và `NEXT_PUBLIC_SITE_URL`.
-
 ## Phân quyền CMS
 
 Vai trò admin local được cấu hình bằng:
